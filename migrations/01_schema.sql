@@ -1,42 +1,47 @@
+DROP TABLE IF EXISTS property_reviews CASCADE;
+DROP TABLE IF EXISTS reservations CASCADE;
+DROP TABLE IF EXISTS properties CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(255),
-  email VARCHAR(255),
-  password VARCHAR(255)
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE properties (
-  id SERIAL PRIMARY KEY,
-  owner_id int NOT NULL REFERENCES users(id),
-  title VARCHAR(255),
-  description text,
-  thumbnail_photo_url VARCHAR(255),
-  cover_photo_url VARCHAR(255),
-  cost_per_night int,
-  parking_spaces int,
-  number_of_bathrooms int,
-  number_of_bedrooms int,
-  country VARCHAR(255),
-  street VARCHAR(255),
-  city VARCHAR(255),
-  province VARCHAR(255),
-  post_code VARCHAR(255),
-  active BOOLEAN
+  id SERIAL PRIMARY KEY NOT NULL,
+  owner_id int NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(255) NOT NULL,
+  description text NOT NULL,
+  thumbnail_photo_url VARCHAR(255) NOT NULL,
+  cover_photo_url VARCHAR(255) NOT NULL,
+  cost_per_night int NOT NULL,
+  parking_spaces int NOT NULL,
+  number_of_bathrooms int NOT NULL,
+  number_of_bedrooms int NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  street VARCHAR(255) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  province VARCHAR(255) NOT NULL,
+  post_code VARCHAR(255) NOT NULL,
+  active BOOLEAN NOT NULL
 );
 
 CREATE TABLE reservations (
-  id SERIAL PRIMARY KEY,
-  start_date date,
-  end_date date,
-  property_id int NOT NULL REFERENCES properties(id),
-  guest_id int NOT NULL REFERENCES users(id)
+  id SERIAL PRIMARY KEY NOT NULL,
+  start_date date NOT NULL,
+  end_date date NOT NULL,
+  property_id int NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
+  guest_id int NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE property_reviews (
-  id SERIAL PRIMARY KEY,
-  guest_id int NOT NULL REFERENCES users(id),
-  property_id int NOT NULL REFERENCES properties(id),
-  reservation_id int NOT NULL REFERENCES reservations(id),
-  rating smallint,
-  message text
+  id SERIAL PRIMARY KEY NOT NULL,
+  guest_id int NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  property_id int NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
+  reservation_id int NOT NULL REFERENCES reservations(id) ON DELETE CASCADE,
+  rating smallint NOT NULL,
+  message text NOT NULL
 );
