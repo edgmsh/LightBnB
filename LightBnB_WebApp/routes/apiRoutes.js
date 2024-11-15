@@ -36,6 +36,7 @@ router.post("/properties", (req, res) => {
 
   const newProperty = req.body;
   newProperty.owner_id = userId;
+  newProperty.active = true;
   database
     .addProperty(newProperty)
     .then((property) => {
