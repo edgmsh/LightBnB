@@ -1,4 +1,4 @@
-const pool = require("./index.js");
+const { client } = require("./index");
 /// Users
 
 /**
@@ -7,7 +7,7 @@ const pool = require("./index.js");
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = function (email) {
-  return pool
+  return client
     .query(`SELECT * FROM users where email = $1`, [email.toLowerCase()])
     .then((result) => {
       console.log(result.rows[0]);
@@ -23,7 +23,7 @@ const getUserWithEmail = function (email) {
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithId = function (id) {
-  return pool
+  return client
     .query(`SELECT * FROM users where id = $1`, [id])
     .then((result) => {
     //  console.log(result.rows[0]);
@@ -46,7 +46,7 @@ const addUser = function (user) {
       ($1, $2, $3)
     RETURNING *
   `;
-  return pool
+  return client
   .query(query, [user.name,user.email,user.password])
   .then((result) => {
   //  console.log(result.rows[0]);
@@ -75,7 +75,7 @@ const getAllReservations = function (guest_id, limit = 10) {
   order by reservations.start_date asc
   limit $2;
   `;
-  return pool
+  return client
     .query(query, [guest_id,limit])
     .then((result) => {
      // console.log(result.rows);
@@ -160,7 +160,7 @@ const getAllProperties = function (options, limit = 10) {
   console.log(queryString, queryParams);
 
   // 6
-  return pool.query(queryString, queryParams).then((res) => res.rows);
+  return client.query(queryString, queryParams).then((res) => res.rows);
 };
 /**
  * Add a property to the database
@@ -211,7 +211,7 @@ const addProperty = function (property) {
     property.active 
   ];
 
-  return pool
+  return client
   .query(query, queryParams)
   .then((result) => {
   // console.log(result.rows[0]);

@@ -1,10 +1,11 @@
-const { Pool } = require("pg");
+const pg = require("pg");
+const { Pool } = pg;
 
-const pool = new Pool({
+const client = new Pool({
   user: "development",
   password: "development",
   host: "localhost",
   database: "lightbnb",
 });
 
-module.exports = pool;
+module.exports = {client};
